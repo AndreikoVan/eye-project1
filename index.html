@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Welcome to come eye-catching </title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			#info {
+				position: absolute;
+				top: 50%; 
+                float:right;
+                left:30%;
+                width: 30%;
+				color: #ffffff;
+				padding: 5px;
+				font-family:Monospace;
+				font-size:50px;
+				font-weight: bold;
+				text-align:center;
+			}
+
+			a {
+				color: #ffffff;
+			}
+		</style>
+	</head>
+	<body>
+
+		<div id="container"></div>
+		<div id="info">
+		    <a href="indexMain.html" target="_top">Go to main page</a>
+		</div>
+		<script src="three.js-master/build/three.min.js"></script>
+		<script src="three.js-master/examples/js/renderers/Projector.js"></script>
+		<script src="three.js-master/examples/js/renderers/CanvasRenderer.js"></script>
+
+        
+        <script src="three.js-master/examples/js/libs/stats.min.js"></script>
+        <!-- font processing -->
+   		<script src="three.js-master/examples/js/geometries/TextGeometry.js"></script>
+		<script src="three.js-master/examples/js/utils/FontUtils.js"></script>
+		<script src="three.js-master/examples/fonts/helvetiker_regular.typeface.js"></script>
+
+
+		<script>
+
+		    var camera, scene, renderer;
+
+		    var texture_placeholder,
+			isUserInteracting = false,
+			onMouseDownMouseX = 0, onMouseDownMouseY = 0,
+			lon = 90, onMouseDownLon = 0,
+			lat = 0, onMouseDownLat = 0,
+			phi = 0, theta = 0,
+			target = new THREE.Vector3();
+
+		    init();
+		    animate();
+
+		    function init() {
+		        //debugger;
+		        var container, mesh;
+
+		        container = document.getElementById('container');
+
+		        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1100);
+		        camera.position.set(0, 0,0);
+
+		        scene = new THREE.Scene();
+
+		        // text processing 
+		        // Get text from hash
+		        var theText = "Pdsdfsdf f sdfs fdsfsdf";
+
+		        var text3d = new THREE.TextGeometry(theText, {
+		            size: 80,
+		            height: 20,
+		            curveSegments: 2,
+		            font: "helvetiker"
+		        });
+
+		        debugger;
+		        text3d.computeBoundingBox();
+		        var bignum = text3d.boundingBox.max.x;
+		        var smallnum = text3d.boundingBox.min.x;
+		        var centerOffset = -0.5 * (bignum - smallnum);
+
+		        var material = new THREE.MeshFaceMaterial([
+					new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff, overdraw: 0.5 }),
+					new THREE.MeshBasicMaterial({ color: 0x000000, overdraw: 0.5 })
+		        ]);
+
+		        text = new THREE.Mesh(text3d, material);
+
+		        text.position.x = 0;
+		        text.position.y = 0;
+		        text.position.z = 0;
+
+		        text.rotation.x = 0;
+		        text.rotation.y = 0;
+
+		        group = new THREE.Group();
+		        group.add(text);
+
+		        scene.add(group);
+                
+		        texture_placeholder = document.createElement('canvas');
+		        texture_placeholder.width = 128;
+		        texture_placeholder.height = 128;
+
+		        var context = texture_placeholder.getContext('2d');
+		        context.fillStyle = 'rgb( 200, 200, 200 )';
+		        context.fillRect(0, 0, texture_placeholder.width, texture_placeholder.height);
+
+		        var correctLinkPath = "three.js-master/examples/";
+		        //debugger;
+		        var materials = [
+                    loadTexture(correctLinkPath + 'textures/cube/skybox/px.jpg'), // right
+					loadTexture(correctLinkPath + 'textures/cube/skybox/nx.jpg'), // left
+					loadTexture(correctLinkPath + 'textures/cube/skybox/py.jpg'), // top
+					loadTexture(correctLinkPath + 'textures/cube/skybox/ny.jpg'), // bottom
+					loadTexture(correctLinkPath + 'textures/cube/skybox/pz.jpg'), // back
+					loadTexture(correctLinkPath + 'textures/cube/skybox/nz.jpg')  // front
+
+		        ];
+
+		        mesh = new THREE.Mesh(new THREE.BoxGeometry(300, 300, 300, 7, 7, 7), new THREE.MeshFaceMaterial(materials));
+		        mesh.scale.x = -1;
+
+		        scene.add(mesh);
+
+		        renderer = new THREE.CanvasRenderer();
+		        renderer.setPixelRatio(window.devicePixelRatio);
+		        renderer.setSize(window.innerWidth, window.innerHeight);
+		        container.appendChild(renderer.domElement);
+
+		        document.addEventListener('mousedown', onDocumentMouseDown, false);
+		        document.addEventListener('mousemove', onDocumentMouseMove, false);
+		        document.addEventListener('mouseup', onDocumentMouseUp, false);
+		        document.addEventListener('mousewheel', onDocumentMouseWheel, false);
+
+		        document.addEventListener('touchstart', onDocumentTouchStart, false);
+		        document.addEventListener('touchmove', onDocumentTouchMove, false);
+
+		        //
+
+		        window.addEventListener('resize', onWindowResize, false);
+
+		    }
+
+		    function onWindowResize() {
+
+		        camera.aspect = window.innerWidth / window.innerHeight;
+		        camera.updateProjectionMatrix();
+
+		        renderer.setSize(window.innerWidth, window.innerHeight);
+
+		    }
+
+		    function loadTexture(path) {
+
+		        var texture = new THREE.Texture(texture_placeholder);
+		        var material = new THREE.MeshBasicMaterial({ map: texture, overdraw: 0.5 });
+
+		        var image = new Image();
+		        image.onload = function () {
+
+		            texture.image = this;
+		            texture.needsUpdate = true;
+
+		        };
+		        image.src = path;
+
+		        return material;
+
+		    }
+
+		    function onDocumentMouseDown(event) {
+
+		        event.preventDefault();
+
+		        isUserInteracting = true;
+
+		        onPointerDownPointerX = event.clientX;
+		        onPointerDownPointerY = event.clientY;
+
+		        onPointerDownLon = lon;
+		        onPointerDownLat = lat;
+
+		    }
+
+		    function onDocumentMouseMove(event) {
+
+		        if (isUserInteracting === true) {
+
+		            lon = (onPointerDownPointerX - event.clientX) * 0.1 + onPointerDownLon;
+		            lat = (event.clientY - onPointerDownPointerY) * 0.1 + onPointerDownLat;
+
+		        }
+
+		    }
+
+		    function onDocumentMouseUp(event) {
+
+		        isUserInteracting = false;
+
+		    }
+
+		    function onDocumentMouseWheel(event) {
+
+		        camera.fov -= event.wheelDeltaY * 0.05;
+		        camera.updateProjectionMatrix();
+
+		    }
+
+
+		    function onDocumentTouchStart(event) {
+
+		        if (event.touches.length == 1) {
+
+		            event.preventDefault();
+
+		            onPointerDownPointerX = event.touches[0].pageX;
+		            onPointerDownPointerY = event.touches[0].pageY;
+
+		            onPointerDownLon = lon;
+		            onPointerDownLat = lat;
+
+		        }
+
+		    }
+
+		    function onDocumentTouchMove(event) {
+
+		        if (event.touches.length == 1) {
+
+		            event.preventDefault();
+
+		            lon = (onPointerDownPointerX - event.touches[0].pageX) * 0.1 + onPointerDownLon;
+		            lat = (event.touches[0].pageY - onPointerDownPointerY) * 0.1 + onPointerDownLat;
+
+		        }
+
+		    }
+
+		    function animate() {
+
+		        requestAnimationFrame(animate);
+		        update();
+
+		    }
+
+		    function update() {
+
+		        if (isUserInteracting === false) {
+
+		            lon += 0.1;
+
+		        }
+
+		        lat = Math.max(-85, Math.min(85, lat));
+		        phi = THREE.Math.degToRad(90 - lat);
+		        theta = THREE.Math.degToRad(lon);
+
+		        target.x = 500 * Math.sin(phi) * Math.cos(theta);
+		        target.y = 500 * Math.cos(phi);
+		        target.z = 500 * Math.sin(phi) * Math.sin(theta);
+
+		        camera.lookAt(target);
+
+		        renderer.render(scene, camera);
+
+		    }
+
+		</script>
+	</body>
+</html>

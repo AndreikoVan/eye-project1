@@ -1,0 +1,19 @@
+﻿/* ----------- Apple Watch ----------- */
+@media
+  (max-device-width: 42mm)
+  and (min-device-width: 38mm) { 
+    #logo {
+        border: 0px solid red;
+    }
+
+}
+
+/* ----------- Moto 360 Watch ----------- */
+@media 
+  (max-device-width: 218px)
+  and (max-device-height: 281px) { 
+        #logo {
+                border: 0px solid red;
+            }
+
+}

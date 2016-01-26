@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0" >
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/mediaResponsivePhone.css">
+    <link rel="stylesheet" href="css/mediaResponsiveTablet.css">
+    <link rel="stylesheet" href="css/mediaResponsiveLapTops.css">
+    <link rel="stylesheet" href="css/mediaResponsiveWearables.css">
+
+    <!-- js plugins...-->
+    <!-- jquery basic...-->
+        <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="js/jquery.lighter.js" type="text/javascript"></script>
+    <!-- jquery slider...-->
+
+    <!-- my only js...-->
+    <script src ="js/main.js"></script>
+    <script>
+        var dataleft;
+        var dataright;
+        var datalogo;
+
+        var devx;
+        var devy;
+        var dpi;
+
+
+        function controllerWindowResize() {
+            //debugger;
+            devx = screen.width;
+            devy = screen.height;
+            strLog = "," + devx + "," + devy; dump();
+            var newWidth = devx;
+
+            var GoodLeftSize = Math.min($("#leftbutton").width(), $("#leftbutton").height());
+            GoodLeftSize = newWidth * 0.2;
+            var GoodRightSize = Math.min($("#rightbutton").width(), $("#rightbutton").height());
+            GoodRightSize = newWidth * 0.2;
+            var GoodLogoSize = Math.min($("#logo").width(), $("#logo").height());
+            GoodLogoSize = newWidth * 0.21;
+            var GoodTeamCaptionDiv = Math.min($("#logo").width(), $("#logo").height());
+            GoodTeamCaptionDiv = newWidth * 0.3;
+
+            $("#leftbutton").width(GoodLeftSize); $("#leftbutton").height(GoodLeftSize);
+            $("#rightbutton").width(GoodRightSize); $("#rightbutton").height(GoodRightSize);
+            $("#logo").width(GoodLogoSize); $("#logo").height(GoodLogoSize);
+            $("#teamcaption").width(GoodTeamCaptionDiv);
+            $("#teamcaption").height(GoodLeftSize);
+
+        }
+
+        $(window).resize(function () {
+            controllerWindowResize();
+        }
+        );
+
+        $(document).ready(
+            function () {
+                controllerWindowResize();
+                //alert("doc ready start");//alert("doc ready end");
+                strLog = "doc ready start"; dump();
+                devx = screen.width;
+                devy = screen.height;
+                strLog = "doc," + devx + "," + devy; dump();
+
+                var $leftbutton = $("#leftbutton");
+                var $rightbutton = $("#rightbutton");
+                $leftbutton.click(dataleft, leftbutton_click);
+                $rightbutton.click(dataright, rightbutton_click);
+                var $logodiv = $("#logo");
+                $logodiv.click(datalogo, logo_click);
+            }
+            );
+
+    </script>
+
+<script>
+    function Person(imagefilename, firstname, lastname) {
+        this.ImageFileName = imagefilename;
+        this.FirstName = firstname;
+        this.LastName = lastname;
+    }
+    function showPerson(anyPerson) {
+        var strTemp = anyPerson.ImageFileName;
+        strTemp = strTemp + "," + anyPerson.FirstName + "," + anyPerson.LastName;
+        console.log(strTemp);
+    }
+    function PersonEx(imagefilename, firstname, lastname, stagenumber) {
+        var person = new Person(imagefilename, firstname, lastname);
+        this.ImageFileName = person.ImageFileName;
+        this.FirstName = person.FirstName;
+        this.LastName = person.LastName;
+        this.ImagePath = "set" + stagenumber + "/" + this.ImageFileName;
+    }
+    function showPersonEx(anyPersonEx) {
+        var strTemp = anyPersonEx.ImageFileName;
+        strTemp = strTemp + "," + anyPersonEx.FirstName + "," + anyPersonEx.LastName + ":" + anyPersonEx.ImagePath;
+        console.log(strTemp);
+    }
+
+
+</script>
+<script>
+    var xmlPath = " ";
+    var varPersonExArray = [];
+    var varPersonLength;
+    // irrespective of varPersonExArray && varPersonLength
+    function myxmlView(stageNumber, xhttp) {
+        var xmlDoc = xhttp.responseXML;
+        var varPerson;
+        var varTeam;
+        var varControls;
+
+        varPerson = xmlDoc.getElementsByTagName("Person");
+        var varPersonLength = varPerson.length;
+
+        varTeam = xmlDoc.getElementsByTagName("Team");
+        var varTeamLength = varTeam.length;
+
+        varControl = xmlDoc.getElementsByTagName("Controls");
+        var varControlLength = varControl.length;
+
+        var varButton = xmlDoc.getElementsByTagName("Button");
+        var varButtonLength = varButton.length;
+
+        var strTemp100 = ""; var varImageFileName = "", varFirstName = "", varLastName = "";
+
+        var fori; for (fori = 0; fori < varPersonLength; fori++) {
+
+            varImageFileName = varPerson[fori].getElementsByTagName("ImageFileName")[0].childNodes[0].nodeValue;
+            strTemp100 = strTemp100 + varImageFileName;
+
+            varFirstName = varPerson[fori].getElementsByTagName("FirstName")[0].childNodes[0].nodeValue;
+            strTemp100 = strTemp100 + "," + varFirstName;
+
+            varLastName = varPerson[fori].getElementsByTagName("LastName")[0].childNodes[0].nodeValue;
+            strTemp100 = strTemp100 + "," + varLastName;
+
+            strTemp100 = strTemp100 + "" + "<br>";
+        }
+
+        return strTemp100;
+    }
+    function xmlView(stageNumber) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                //alert(xmlPath + ":ok-4");
+                console.log(xmlPath + ":ok-4");
+                document.getElementById("demo").innerHTML = myxmlView(stageNumber, xhttp);
+            }
+        };
+
+        xmlPath = "Set " + stageNumber + "/" + "manifest.xml";
+        xhttp.open("GET", xmlPath, true);
+        xhttp.send();
+    }
+    // Respective of varPersonExArray && varPersonLength
+    function loadDoc(stageNumber) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                //alert(xmlPath + ":ok-4");
+                console.log(xmlPath + ":ok-4");
+                getStageElement(stageNumber, xhttp);
+                var para = 0;
+                LoadingAnyImage(para);
+            }
+        };
+
+        xmlPath = "Set " + stageNumber + "/" + "manifest.xml";
+        xhttp.open("GET", xmlPath, true);
+        xhttp.send();
+    }
+    function getStageElement(stageNumber, xhttp) {
+
+        var xmlDoc = xhttp.responseXML;
+
+        var strTemp = stageNumber;
+
+        var varPerson;
+        var varTeam;
+        var varControls;
+
+        varPerson = xmlDoc.getElementsByTagName("Person");
+        varPersonLength = varPerson.length;
+
+        varTeam = xmlDoc.getElementsByTagName("Team");
+        var varTeamLength = varTeam.length;
+
+        varControl = xmlDoc.getElementsByTagName("Controls");
+        var varControlLength = varControl.length;
+
+        var varButton = xmlDoc.getElementsByTagName("Button");
+        var varButtonLength = varButton.length;
+
+        var strTemp100 = ""; var varImageFileName = "", varFirstName = "", varLastName = "";
+
+        var fori; for (fori = 0; fori < varPersonLength; fori++) {
+
+            varImageFileName = varPerson[fori].getElementsByTagName("ImageFileName")[0].childNodes[0].nodeValue;
+            strTemp100 = strTemp100 + varImageFileName;
+
+            varFirstName = varPerson[fori].getElementsByTagName("FirstName")[0].childNodes[0].nodeValue;
+            strTemp100 = strTemp100 + "," + varFirstName;
+
+            varLastName = varPerson[fori].getElementsByTagName("LastName")[0].childNodes[0].nodeValue;
+            strTemp100 = strTemp100 + "," + varLastName;
+            //console log 
+            var anyPersonEx = new PersonEx(varImageFileName, varFirstName, varLastName, stageNumber);
+            //showPersonEx(anyPersonEx);
+            varPersonExArray[fori] = anyPersonEx;
+            strTemp100 = strTemp100 + "" + "<br>";
+        }
+        for (fori = 0; fori < varPersonLength; fori++) {
+            showPersonEx(varPersonExArray[fori]);
+            console.log(varPersonExArray[fori].FirstName);
+        }
+        document.getElementById("demo").innerHTML = strTemp + "<hr>" + strTemp100;
+
+
+
+    }
+    function LoadingAnyImage(stage, numberPerson) {
+        var theImage = new Image();
+        theImage.src = varPersonExArray[numberPerson].ImagePath;
+        theImage.style.position = "absolute";
+        theImage.style.width = varPersonExArray[numberPerson].width;
+        theImage.style.height = varPersonExArray[numberPerson].height;
+        theImage.style.top = varPersonExArray[numberPerson].top;
+        theImage.style.left = varPersonExArray[numberPerson].left;
+        /*theImage.style.zindex = varPersonExArray[numberPerson].zindex;
+        theImage.style.position = varPersonExArray[numberPerson].position;
+        theImage.style.width = varPersonExArray[numberPerson].width;
+        theImage.style.height = varPersonExArray[numberPerson].height;
+        theImage.style.top = varPersonExArray[numberPerson].top;
+        theImage.style.left = varPersonExArray[numberPerson].left;
+        */
+        stage.appendChild(theImage);
+    }
+</script>
+</head>
+
+<body>
+<div id="stage">
+<div id="controllerWindow">
+        <div id="leftbutton">
+             <img src="Set 1/Left.png"/>
+        </div>
+        <div id="logo">
+            <img src="Set 1/Logo.png" />
+        </div> 
+        <div id="teamcaptionbutton">
+            <span  id ="teamcaption">
+                <p style="font-size:30px;">
+                   Kanvas
+                </p></span>
+        </div> 
+
+        <div id="rightbutton">
+            <img src="Set 1/Right.png"/>
+        </div>
+    </div>
+<script>
+    function gettingDeviceInfo() {
+        var devicex;
+        var devicey;
+        devicex = screen.width;
+        devicey = screen.height;
+        var dpix = screen.deviceXDPI;
+        var dpiy = screen.deviceYDPI;
+        var str_debug = "";
+        str_debug += "dx=" + devicex + ",";
+        str_debug += "dy=" + devicey + ",";
+        str_debug += "dpix=" + devicey + ",";
+        str_debug += "dpiy=" + devicey + ",";
+
+        console.log(str_debug);
+    }
+    </script>
+</div>
+<button type="button" onclick="gettingDeviceInfo()">Getting</button>
+<button type="button" onclick="xmlView(1)">xmlView</button>
+<button type="button" onclick="xmlView(2)">xmlView</button>
+<button type="button" onclick="loadDoc(1)">Change1</button>
+<button type="button" onclick="loadDoc(2)">Change2</button>
+<div id="demo"></div>
+</body>
+    </html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--CDN links for TweenLite, CSSPlugin, and EasePack-->
+<script src="./src/minified/plugins/CSSPlugin.min.js"></script>
+<script src="./src/minified/easing/EasePack.min.js"></script>
+<script src="./src/minified/TweenLite.min.js"></script>
+<script src="./src/uncompressed/TweenLite.js"></script>
+</head>
+
+<!--CDN link for  TweenMax-->
+<body>
+
+<div id="ddd">
+	abcdef
+</div>
+<script>
+function onabc(){
+	alert("onclick");
+	var ddd = $("#ddd");
+	TweenLite.to(ddd, 2.5, {width:1000});
+};
+</script>
+
+<div onclick="onabc()">abc</div>
+</div>
+</body>

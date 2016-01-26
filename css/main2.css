@@ -1,0 +1,131 @@
+﻿* {
+    box-sizing:border-box;
+}
+
+button {
+    z-index:100;
+}
+
+body, html {
+    margin:0;
+    border:0px solid red;
+}
+
+div#stage {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-image: url('../background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#controllerWindow {
+    position: relative;
+    top: 80%;
+    left: 0px;
+    width: 100%;
+    height: 20%;
+}
+
+#leftbutton {
+    /* position: relative; */
+    top: 0%;
+    left: 0%;
+    width: 20%;
+    height: 100%;
+    float: left;
+}
+
+#leftbutton img {
+    width: 100%;
+    height: 100%;
+    border:0px solid red;
+}
+#leftbutton:hover
+    {
+    box-shadow: 0px 0px 0px rgba(255,255,255,0.8) inset, 0px 0px 0px rgba(0,0,0,0.4);
+    transform: scale(0.95);
+    opacity: 0.8;
+}
+#leftbutton:active {
+    box-shadow: 0px 1px 1px rgba(255,255,255,0.8) inset, 1px 1px 5px rgba(0,0,0,0.4);
+    transform: scale(0.98);
+    opacity: 1;
+}
+
+#logo{
+    position:relative;
+    top: 0%;
+    margin-left: 2%;
+    /* margin-right: 2%; */
+    margin-top: 0%;
+    width: 20%;
+    height: 90%;
+    float:left;
+}
+#logo img {
+        width: 100%;
+        height: 100%;
+        border: 0px solid red;
+}
+#logo:focus {
+    box-shadow: 0px 0px 0px rgba(255,255,255,0.8) inset, 0px 0px 0px rgba(0,0,0,0.4);
+    transform: scale(0.95);
+    opacity: 0.8;
+    }
+#logo:hover {
+    rotation:120;
+}
+#logo img slipLeft{
+    rotation:120deg;
+}
+ 
+#logo img slipRight{
+    rotation:350deg;
+}
+
+#rightbutton {
+    position:relative;
+    top:0%;
+    right: 2%;
+    width: 20%;
+    height: 100%;
+    float: right;
+}
+#rightbutton img {
+    width: 100%;
+    height: 100%;
+    border: 0px solid red;
+}
+
+#teamcaptionbutton {
+    position:relative;
+    top:0%;
+    left: -6%;
+    width:30%;
+    height:100%;
+    float: left;
+    z-index:1000;
+
+    text-shadow: 0 1px 0 #F3F3F3;
+    border-color: #bbb;
+    text-align: -webkit-match-parent;
+    font-size: 30px;
+
+}
+
+#rightbutton:hover
+{
+    box-shadow: 0px 0px 0px rgba(255,255,255,0.8) inset, 0px 0px 0px rgba(0,0,0,0.4);
+    transform: scale(0.95);
+    opacity: 0.8;
+}
+#rightbutton:active
+{
+    box-shadow: 0px 1px 1px rgba(255,255,255,0.8) inset, 1px 1px 5px rgba(0,0,0,0.4);
+    transform: scale(0.98);
+    opacity: 1;
+}
