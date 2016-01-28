@@ -47,14 +47,14 @@
 			<LastName>Barnes</LastName>
 		</Person>
 		<Person>
-			<ImageFileName>4311.png</ImageFileName>
+			<ImageFileName>4331.png</ImageFileName>
 			<FirstName>Drew</FirstName>
 			<LastName>Clark</LastName>
 		</Person>
 	</People>
 <Team>
 		<LogoFileName>Logo.png</LogoFileName>
-		<Name>Kansas Eagles</Name>
+		<Name>Kansas Eagles Group 2</Name>
 		<LogoColor1>r="254" g="207" b="7"</LogoColor1>
 		<LogoColor2>r="255" g="255" b="255"</LogoColor2>
 		<LogoColor3>r="0" g="0" b="0"</LogoColor3>

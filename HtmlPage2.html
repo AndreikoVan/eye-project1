@@ -78,7 +78,7 @@
             //debugger;
             devx = window.innerWidth;
             devy = window.innerHeight;
-            strLog = "," + devx + "," + devy; dump();
+            varg_strLog = "," + devx + "," + devy; dump();
             var newWidth = devx;
 
             var GoodLeftSize = Math.min($("#leftbutton").width(), $("#leftbutton").height());
@@ -96,7 +96,7 @@
             debugger;
             $("#teamcaptionbutton").width(GoodTeamCaptionButton);
             $("#teamcaptionbutton").height(GoodLeftSize);
-            makingTeamCaptionButtonByUsingCanvasInHTML();
+            //makingTeamCaptionButtonByUsingCanvasInHTML();
 
         }
         
@@ -109,10 +109,10 @@
             function () {
                 controllerWindowResize();
                 //alert("doc ready start");//alert("doc ready end");
-                strLog = "doc ready start"; dump();
+                varg_strLog = "doc ready start"; dump();
                 devx = screen.width;
                 devy = screen.height;
-                strLog = "doc," + devx + "," + devy; dump();
+                varg_strLog = "doc," + devx + "," + devy; dump();
 
                 var $leftbutton = $("#leftbutton");
                 var $rightbutton = $("#rightbutton");
@@ -302,7 +302,7 @@
             <img src="Set 1/Logo.png" />
         </div> 
         <span id="teamcaptionbutton">
-            Kanvas
+            
         </span> 
 
         <div id="rightbutton">

@@ -33,7 +33,7 @@
             //debugger;
             devx = screen.width;
             devy = screen.height;
-            strLog = "," + devx + "," + devy; dump();
+            varg_strLog = "," + devx + "," + devy; dump();
             var newWidth = devx;
 
             var GoodLeftSize = Math.min($("#leftbutton").width(), $("#leftbutton").height());
@@ -62,10 +62,10 @@
             function () {
                 controllerWindowResize();
                 //alert("doc ready start");//alert("doc ready end");
-                strLog = "doc ready start"; dump();
+                varg_strLog = "doc ready start"; dump();
                 devx = screen.width;
                 devy = screen.height;
-                strLog = "doc," + devx + "," + devy; dump();
+                varg_strLog = "doc," + devx + "," + devy; dump();
 
                 var $leftbutton = $("#leftbutton");
                 var $rightbutton = $("#rightbutton");

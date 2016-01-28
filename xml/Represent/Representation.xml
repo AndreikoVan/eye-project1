@@ -1,10 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Representation>
-<FROM>
-  
-</FROM>
-<TO>
-    
-</TO>
- 
+  <MainHeroes>
+    <NO>3</NO>
+  </MainHeroes>
+   
 </Representation>
